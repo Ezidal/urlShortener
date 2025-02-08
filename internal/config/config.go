@@ -1,4 +1,4 @@
-package parseconfig
+package config
 
 import (
 	"log"
@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	Env          string `yaml:"env" env-required:"true"`
+	Environment  string `yaml:"environment" env-required:"true"`
 	Storage_path string `yaml:"storage_path"`
 	HttpServer   `yaml:"http_server"`
 }
@@ -27,7 +27,7 @@ func LoadConfig() (*Config, error) {
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {
 		// configPath = "./config/local.yaml"
-		log.Fatal("Could not find the config file")
+		log.Fatal("CONFIG_PATH is not set")
 	}
 
 	err := cleanenv.ReadConfig(configPath, &cfg)

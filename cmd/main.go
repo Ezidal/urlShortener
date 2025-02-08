@@ -1,14 +1,16 @@
 package main
 
 import (
-	"fmt"
-	parseconfig "urlShortener/internal/parseConfig"
+	"log"
+	"urlShortener/internal/config"
+	"urlShortener/internal/logger"
 )
 
 func main() {
-	config, err := parseconfig.LoadConfig()
+	config, err := config.LoadConfig()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-	fmt.Println(config)
+	log := logger.SetLogger(config.Environment)
+
 }
