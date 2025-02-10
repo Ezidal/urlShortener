@@ -4,9 +4,12 @@ import (
 	"log"
 	"os"
 	"urlShortener/internal/config"
+	"urlShortener/internal/httpServer/handlers"
 	"urlShortener/internal/logger"
 	"urlShortener/internal/logger/er"
 	"urlShortener/internal/storage/sqlite"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -23,12 +26,14 @@ func main() {
 		log.Error("failed to init db", er.Err(err))
 		os.Exit(1)
 	}
-	// err = storage.SaveUrl("https://google.com", "gogle")
-	storage.SaveUrl("popopoppo", "pop")
-	err = storage.DeleteUrl("pop")
-	if err != nil {
-		log.Error("failed to delete db", er.Err(err))
-	} else {
-		log.Info("успех")
-	}
+
+	handlers.InitUrlSaver(storage)
+	handlers.InitUrlGetter(storage)
+	r := gin.Default()
+
+	r.GET("/hello", handlers.Hello)
+	r.POST("/save", handlers.SaveUrl)
+	r.GET("/get/:alias", handlers.GetUrl)
+	r.GET("/get/all", handlers.GetAllUrls)
+	r.Run(":8080")
 }

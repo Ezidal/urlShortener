@@ -73,6 +73,31 @@ func (s Storage) GetUrl(alias string) (string, error) {
 	return res, nil
 }
 
+func (s Storage) GetAllUrls() (map[string]string, error) {
+	const fn = "storage.sqlite.GetAllUrls"
+	urls := make(map[string]string)
+
+	rows, err := s.db.Query("SELECT alias, url FROM urls")
+	if err != nil {
+		return nil, fmt.Errorf("%s : %w", fn, err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var alias, url string
+		if err := rows.Scan(&alias, &url); err != nil {
+			return nil, fmt.Errorf("%s : %w", fn, err)
+		}
+		urls[alias] = url
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("%s : %w", fn, err)
+	}
+
+	return urls, nil
+}
+
 func (s Storage) DeleteUrl(alias string) error {
 	const fn = "storage.sqlite.DeleteUrl"
 	stmt, err := s.db.Prepare("DELETE FROM urls WHERE alias IS (?)")
