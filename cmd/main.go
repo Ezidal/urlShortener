@@ -27,13 +27,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	r := gin.New()
+	// r.Use(sloggin.New(log))
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
 	handlers.InitUrlSaver(storage)
 	handlers.InitUrlGetter(storage)
-	r := gin.Default()
+	handlers.InitUrlDeleter(storage)
 
-	r.GET("/hello", handlers.Hello)
 	r.POST("/save", handlers.SaveUrl)
 	r.GET("/get/:alias", handlers.GetUrl)
 	r.GET("/get/all", handlers.GetAllUrls)
+	r.DELETE("/delete/:alias", handlers.DeleteUrl)
 	r.Run(":8080")
 }

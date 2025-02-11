@@ -18,7 +18,7 @@ type Request struct {
 
 type Response struct {
 	Error string `json:"error,omitempty"`
-	Alias string `json:"alias,omitempty"`
+	Alias string `json:"alias"`
 }
 
 type UrlSaver interface {
@@ -45,7 +45,6 @@ func SaveUrl(c *gin.Context) {
 	}
 
 	if req.Alias == "" {
-		// Generate a random alias if not provided
 		req.Alias, _ = generateRandomAlias()
 	}
 
