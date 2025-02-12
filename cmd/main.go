@@ -31,9 +31,9 @@ func main() {
 	// r.Use(sloggin.New(log))
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	handlers.InitUrlSaver(storage)
-	handlers.InitUrlGetter(storage)
-	handlers.InitUrlDeleter(storage)
+	handlers.InitUrlSaver(storage, log)
+	handlers.InitUrlGetter(storage, log)
+	handlers.InitUrlDeleter(storage, log)
 
 	r.POST("/save", handlers.SaveUrl)
 	r.GET("/get/:alias", handlers.GetUrl)
