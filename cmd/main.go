@@ -39,5 +39,6 @@ func main() {
 	r.GET("/get/:alias", handlers.GetUrl)
 	r.GET("/get/all", handlers.GetAllUrls)
 	r.DELETE("/delete/:alias", handlers.DeleteUrl)
+	r.GET("/:alias", handlers.RedirectUrl)
 	r.Run(":8080")
 }
