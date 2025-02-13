@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"log/slog"
 	"net/http"
-	"time"
 
 	mr "math/rand"
 
@@ -58,7 +57,7 @@ func SaveUrl(c *gin.Context) {
 }
 
 func generateRandomAlias() (string, error) {
-	mr.Seed(time.Now().UnixNano())
+	// mr.Seed(time.Now().UnixNano())
 	length := mr.Intn(8) + 3
 	bytes := make([]byte, length)
 	if _, err := rand.Read(bytes); err != nil {
